@@ -1,6 +1,5 @@
 import imsteg
-import string
-from random import shuffle
+
 
 
 codec = imsteg.StegCodec()
@@ -26,15 +25,3 @@ elif options == 2:
     path = input("Please provide path for image to be decoded")
     print(im_decode(path))
     
-alphabet = list(string.ascii_lowercase)
-coder = list(string.ascii_lowercase)
-shuffle(coder)
-coding_key = {}
-decoding_key = {}
-print(id(alphabet))
-print(id(coder))
-for key, val in zip(alphabet, coder):
-    coding_key[key] = val
-    decoding_key[val] = key
-print(coding_key)
-print(decoding_key)
