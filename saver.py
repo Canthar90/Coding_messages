@@ -1,5 +1,5 @@
 import bcrypt
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey, String, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 from sqlalchemy import create_engine
 
@@ -20,10 +20,9 @@ class User_info(Base):
 
 
 class Hasher:
-    def __init__(self):
-        self.salt = bcrypt.gensalt()
-        
+
     def hash_it(self, password):
+        self.salt = bcrypt.gensalt()
         passw = password.encode('utf-8')
         hashed = bcrypt.hashpw(passw, self.salt)
         return hashed
@@ -38,19 +37,32 @@ class Hasher:
         
 if __name__ ==  "__main__":
     hasher = Hasher()
-    hashed = hasher.hash_it("kopytK0")
-    print(hasher.check_psw("kopytK0", hashed))
+    # hashed = hasher.hash_it("kopytK0")
+    # print(hasher.check_psw("kopytK0", hashed))
     
     engine = create_engine("sqlite:///data.db", echo=True)
-    with Session(engine) as session :
-        Login = "Fernando 66"
-        password = hashed
-        key = {'a':'a', 'b':'b'}
-        newuser = User_info(
-            Login=Login,
-            Password=password,
-            Decode_key=str(key)
-        )
-        session.add_all([newuser,])
-        session.commit()
+    session = Session(engine) 
+    # with Session(engine) as session :
+    #     Login = "Fernando 66"
+    #     password = hashed
+    #     key = {'a':'a', 'b':'b'}
+    #     newuser = User_info(
+    #         Login=Login,
+    #         Password=password,
+    #         Decode_key=str(key)
+    #     )
+    #     session.add_all([newuser,])
+    #     session.commit()
+    stmt = select(User_info).where(User_info.Login.in_(["Fernando 66"]))
+    # session.scalar(stmt)
+    # print(stmt)
+    for user in session.scalars(stmt):
+        print(user)
+        print(type(user.Decode_key))
+        user_name = user.Login
+        user_password = user.Password
+        user_key = user.Decode_key
+        
+    print(hasher.check_psw("kopytK0", user_password))
     
+        
