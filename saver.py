@@ -2,6 +2,8 @@ import bcrypt
 from sqlalchemy import ForeignKey, String, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 from sqlalchemy import create_engine
+import random
+import string
 
 
 class Base(DeclarativeBase):
@@ -30,15 +32,55 @@ class Hasher:
     def check_psw(self, password, hashed_psw):
         passw = password.encode('utf-8')
         return bcrypt.checkpw(password=passw, hashed_password=hashed_psw) 
+
+    
+class DatabaseKelner():
+    def __init__(self):
+        self.engine = create_engine("sqlite:///data.db", echo=True)
+        self.session = Session(self.engine)
+        self.hasher = Hasher()
         
+    def save_to_db(self, Login, password, key):
+        with Session(self.engine) as session:
+            newuser = User_info(
+                Login=Login,
+                Password=password,
+                Decode_key=str(key)
+            )
+            
+            session.add_all([newuser,])
+            session.commit()
+        
+    def check_if_name_is_free(self, login):
+        try:
+            stmt = (
+                select(User_info)
+                .where(User_info.Login==login)
+            )
+            sandy_address = self.session.scalars(stmt).one()
+            return False
+        except:
+            return True
+        
+    def retrive_password(self, login, password):
+        try:
+            stmt = select(User_info).where(User_info.Login.in_([login]))
+            for elem in self.session.scalars(stmt):
+                hashed_password = elem.Password
+                decode_key = eval(elem.Decode_key)
 
+        except:
+            return False
 
+        if hasher.check_psw(password, hashed_password):
+            pass
         
         
 if __name__ ==  "__main__":
     hasher = Hasher()
     # hashed = hasher.hash_it("kopytK0")
     # print(hasher.check_psw("kopytK0", hashed))
+    kelner = DatabaseKelner()
     
     engine = create_engine("sqlite:///data.db", echo=True)
     session = Session(engine) 
@@ -61,8 +103,17 @@ if __name__ ==  "__main__":
         print(type(user.Decode_key))
         user_name = user.Login
         user_password = user.Password
-        user_key = user.Decode_key
+        user_key = eval(user.Decode_key)
         
     print(hasher.check_psw("kopytK0", user_password))
+    print(user_key)
+    print(type(user_key))
     
+
+    # get random password pf length 8 with letters, digits, and symbols
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for i in range(8))
+    print("Random password is:", password)
+    
+    print(kelner.check_if_name_is_free("dsarnando 66"))
         
