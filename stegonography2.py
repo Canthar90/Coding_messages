@@ -6,7 +6,6 @@ class SeganographCoder():
     def __init__(self):
         self.codec = imsteg.StegCodec()
     
-    
     def im_encode(self, text, path, out_name):
         img = self.codec.encode(path, text)
         img.save(out_name + ".png") 

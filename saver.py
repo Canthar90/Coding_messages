@@ -51,7 +51,7 @@ class DatabaseKelner():
             session.add_all([newuser,])
             session.commit()
         
-    def check_if_name_is_free(self, login):
+    def check_if_login_is_free(self, login):
         try:
             stmt = (
                 select(User_info)
@@ -73,7 +73,7 @@ class DatabaseKelner():
             return False
 
         if hasher.check_psw(password, hashed_password):
-            pass
+            return True, decode_key
         
         
 if __name__ ==  "__main__":
@@ -110,10 +110,10 @@ if __name__ ==  "__main__":
     print(type(user_key))
     
 
-    # get random password pf length 8 with letters, digits, and symbols
+    # get random password pf length 10 with letters, digits, and symbols
     characters = string.ascii_letters + string.digits + string.punctuation
-    password = ''.join(random.choice(characters) for i in range(8))
+    password = ''.join(random.choice(characters) for i in range(10))
     print("Random password is:", password)
     
-    print(kelner.check_if_name_is_free("dsarnando 66"))
+    print(kelner.check_if_login_is_free("dsarnando 66"))
         
