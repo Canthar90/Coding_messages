@@ -54,8 +54,9 @@ class AlphaCoder:
                                password=self.password,
                                key=self.decoding_key)
         
-    def database_out(self):
-        pass
+    def database_out(self, login, passowrd):
+        return self.kelner.retrive_key(login=login, password=passowrd)
+        
         
     def code_message(self):
         to_encode = list(self.text)
@@ -64,11 +65,11 @@ class AlphaCoder:
             new_message += self.coding_key[letter]
         return new_message
         
-    def decode_message(self):
-        to_decode = list(self.encoded)
+    def decode_message(self, decode_key, message):
+        to_decode = list(message)
         new_message = ''
         for letter in to_decode:
-            new_message += self.decoding_key[letter]
+            new_message += decode_key[letter]
         return new_message
     
     def code_to_img(self, img, out_name):
@@ -81,8 +82,18 @@ class AlphaCoder:
         message = self.steg.im_decode(img)
         return message
     
-    def decode_message(self, decode_key, img, password):
-        pass
+    def decode_message(self, img, password):
+        decoded = self.img_decode(img)
+        print(f"first {decoded}")
+        login = decoded.split("___")[0]
+        print(f"second {decoded}")
+        encoded_message = decoded.split("___")[1]
+        decode_key = self.database_out(login=login, passowrd=password)
+        message = self.decode_message(decode_key, encoded_message)
+        return message
+        
+        
+        
         
     
     

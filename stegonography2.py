@@ -14,7 +14,9 @@ class SeganographCoder():
         return img, img_name
 
     def im_decode(self, path):
-        return(self.codec.decode(path))
+        res = (self.codec.decode(path))
+        print(res)
+        return res
 
 
 

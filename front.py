@@ -21,12 +21,17 @@ st.info("""
 with st.expander("Encrypt your message"):
     raw_image =  st.file_uploader("Please choose image")
     secret_message = st.text_input("Import your secret message")
-    cipher_it = st.button(label="cipher my image")
+    cipher_it = st.button(label="Cipher my image")
+ 
+    
+with st.expander("Decrypt your message"):
+    encrypted_image = st.file_uploader("Please choose encrypted image")
+    secret_password = st.text_input("Input image secret password")
+    decrypt_it = st.button(label="Decrypt")
     
     
-    
-if raw_image and cipher_it and secret_message:
-    st.text(raw_image.name)
+# Ciphering message in the pictiure 
+if raw_image and cipher_it and secret_message and (".jpg" in raw_image.name or ".png" in raw_image.name ):
     coder = AlphaCoder(secret_message)
     new_name = "crypted" 
     coded_image, image_name, password =coder.code_to_img(img=raw_image, out_name=new_name)
@@ -35,11 +40,13 @@ if raw_image and cipher_it and secret_message:
     st.success(f'Your decrypting password: {password}', icon="✅")
     
     
+# Decrypting message 
+if decrypt_it and encrypted_image and (".jpg" in encrypted_image.name  or ".png" in encrypted_image.name):
+    with open("encrypted.png", "wb") as file:
+        file.write(encrypted_image.getbuffer())
+    coder = AlphaCoder("init")
+    decrypted_msg =  coder.decode_message("encrypted.png", secret_password)
+    st.subheader("Your secret message will be displayed below")
+    st.text(decrypted_msg)
     
-    
-    # st.text("checking if it works")
-    # st.text(coded_image.__str__)
-    # decoded_raw_msg = coder.img_decode(image_name)
-    
-    # st.text(decoded_raw_msg)
-    
+
