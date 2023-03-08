@@ -31,7 +31,7 @@ if raw_image and cipher_it and secret_message:
     new_name = "crypted" 
     coded_image, image_name, password =coder.code_to_img(img=raw_image, out_name=new_name)
     coded_one = st.image(coded_image, caption="This is image with coded message save it")
-    download_flag = st.download_button("Save", file_name=image_name)
+    
     st.success(f'Your decrypting password: {password}', icon="✅")
     
     

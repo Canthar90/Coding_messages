@@ -46,8 +46,8 @@ class AlphaCoder:
          
     def password_creator(self):
         characters = string.ascii_letters + string.digits + string.punctuation
-        password = ''.join(random.choice(characters) for i in range(10))
-        self.password = self.hasher.hash_it(password)
+        self.password = ''.join(random.choice(characters) for i in range(10))
+        self.hasher.hash_it(self.password)
         
     def database_input(self):
         self.kelner.save_to_db(login=self.login,
