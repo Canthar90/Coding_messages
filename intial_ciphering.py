@@ -1,7 +1,7 @@
 import string
 from random import shuffle
 import random
-from saver import DatabaseKelner
+from saver import DatabaseKelner, Hasher
 
 
 class AlphaCoder:
@@ -10,7 +10,10 @@ class AlphaCoder:
         alphabet = list(string.ascii_lowercase)
         coder = list(string.ascii_lowercase)
         shuffle(coder)
+        
+        # Creating class instances
         self.kelner =  DatabaseKelner()
+        self.hasher = Hasher()
         
         # creating encoding and decoding keys
         self.coding_key = {}
@@ -39,7 +42,8 @@ class AlphaCoder:
          
     def password_creator(self):
         characters = string.ascii_letters + string.digits + string.punctuation
-        self.password = ''.join(random.choice(characters) for i in range(10))
+        password = ''.join(random.choice(characters) for i in range(10))
+        self.password = self.hasher.hash_it(password)
         
     def database_input(self):
         self.kelner.save_to_db(login=self.login,
@@ -60,6 +64,9 @@ class AlphaCoder:
             new_message += self.decoding_key[letter]
         return new_message
     
+    def code_to_img(self, img):
+        pass
+    
     
     
     
@@ -69,5 +76,5 @@ if __name__ == "__main__":
     print(coder.decoding_key)
     print(coder.code_message())
     print(coder.decode_message())
-    coder.login_creator()
+    
         

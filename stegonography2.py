@@ -1,4 +1,5 @@
 import imsteg
+from PIL import Image
 
 
 class SeganographCoder():
@@ -18,12 +19,14 @@ class SeganographCoder():
 
 if __name__ == "__main__":
     codec = SeganographCoder()
-    options = input("Please choose option 1: Encoding \n 2: Decoding")
-    if options == 1: 
+    options = input("Please choose option 1: Encoding \n 2: Decoding: ")
+    if options == "1": 
         text = input("Please input text to encode: ")
         path = input("Please input path to image in whitch you want your message to be encodet in: ")
-        out_name =  input("Give us name of the future file")
-        print(codec.im_encode(text, path, out_name))
+        out_name =  input("Give us name of the future file: ")
+        
+        image = Image.open("puppy.jpg")
+        print(codec.im_encode(text, image, out_name))
         
     elif options == 2:
         path = input("Please provide path for image to be decoded")

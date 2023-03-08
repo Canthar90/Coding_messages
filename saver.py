@@ -40,10 +40,10 @@ class DatabaseKelner():
         self.session = Session(self.engine)
         self.hasher = Hasher()
         
-    def save_to_db(self, Login, password, key):
+    def save_to_db(self, login, password, key):
         with Session(self.engine) as session:
             newuser = User_info(
-                Login=Login,
+                Login=login,
                 Password=password,
                 Decode_key=str(key)
             )
