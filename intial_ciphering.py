@@ -2,18 +2,20 @@ import string
 from random import shuffle
 import random
 from saver import DatabaseKelner, Hasher
+from stegonography2 import SeganographCoder
 
 
 class AlphaCoder:
     def __init__(self, text):
-        self.text =  text
-        alphabet = list(string.ascii_lowercase)
-        coder = list(string.ascii_lowercase)
+        self.text =  text.lower()
+        alphabet = list(string.ascii_lowercase + string.digits + string.punctuation +" ")
+        coder = list(string.ascii_lowercase + string.digits + string.punctuation + " ")
         shuffle(coder)
         
         # Creating class instances
         self.kelner =  DatabaseKelner()
         self.hasher = Hasher()
+        self.steg = SeganographCoder()
         
         # creating encoding and decoding keys
         self.coding_key = {}
@@ -21,6 +23,8 @@ class AlphaCoder:
         for key, val in zip(alphabet, coder):
             self.coding_key[key] = val
             self.decoding_key[val] = key
+            
+        print(f"coding key is  {self.coding_key}" )
         
         self.encoded = self.code_message()
         self.login = '' 
@@ -50,6 +54,9 @@ class AlphaCoder:
                                password=self.password,
                                key=self.decoding_key)
         
+    def database_out(self):
+        pass
+        
     def code_message(self):
         to_encode = list(self.text)
         new_message = ''
@@ -64,8 +71,19 @@ class AlphaCoder:
             new_message += self.decoding_key[letter]
         return new_message
     
-    def code_to_img(self, img):
+    def code_to_img(self, img, out_name):
+        coded_img, im_name = self.steg.im_encode(text=self.encoded, path=img,
+                                        out_name=out_name)
+        self.database_input()
+        return coded_img, im_name, self.password
+    
+    def img_decode(self, img):
+        message = self.steg.im_decode(img)
+        return message
+    
+    def decode_message(self, decode_key, img, password):
         pass
+        
     
     
     

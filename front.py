@@ -8,6 +8,8 @@ st.set_page_config(
     page_icon="images\caesar-cipher.png"
     )
 
+
+
 st.title("Cipher your messages within pictiures")
 
 st.info("""
@@ -25,3 +27,19 @@ with st.expander("Encrypt your message"):
     
 if raw_image and cipher_it and secret_message:
     st.text(raw_image.name)
+    coder = AlphaCoder(secret_message)
+    new_name = "crypted" 
+    coded_image, image_name, password =coder.code_to_img(img=raw_image, out_name=new_name)
+    coded_one = st.image(coded_image, caption="This is image with coded message save it")
+    download_flag = st.download_button("Save", file_name=image_name)
+    st.success(f'Your decrypting password: {password}', icon="✅")
+    
+    
+    
+    
+    # st.text("checking if it works")
+    # st.text(coded_image.__str__)
+    # decoded_raw_msg = coder.img_decode(image_name)
+    
+    # st.text(decoded_raw_msg)
+    

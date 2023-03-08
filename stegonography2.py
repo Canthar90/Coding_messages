@@ -10,7 +10,8 @@ class SeganographCoder():
     def im_encode(self, text, path, out_name):
         img = self.codec.encode(path, text)
         img.save(out_name + ".png") 
-        return "Message has ben encoded"
+        img_name = out_name + ".png"
+        return img, img_name
 
     def im_decode(self, path):
         return(self.codec.decode(path))
