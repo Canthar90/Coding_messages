@@ -13,8 +13,8 @@ class SeganographCoder():
         img_name = out_name + ".png"
         return img, img_name
 
-    def im_decode(self, path):
-        res = (self.codec.decode(path))
+    def im_decode(self, data ,iter_data):
+        res = (self.codec.decode(data ,iter_data))
         print(res)
         return res
 

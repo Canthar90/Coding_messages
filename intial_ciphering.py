@@ -47,14 +47,15 @@ class AlphaCoder:
     def password_creator(self):
         characters = string.ascii_letters + string.digits + string.punctuation
         self.password = ''.join(random.choice(characters) for i in range(10))
-        self.hasher.hash_it(self.password)
+        self.hashed_password = self.hasher.hash_it(self.password)
         
     def database_input(self):
         self.kelner.save_to_db(login=self.login,
-                               password=self.password,
+                               password=self.hashed_password,
                                key=self.decoding_key)
         
     def database_out(self, login, passowrd):
+        print(f"login {login}, password {passowrd}")
         return self.kelner.retrive_key(login=login, password=passowrd)
         
         
@@ -68,6 +69,7 @@ class AlphaCoder:
     def decode_message(self, decode_key, message):
         to_decode = list(message)
         new_message = ''
+        print(decode_key)
         for letter in to_decode:
             new_message += decode_key[letter]
         return new_message
@@ -78,17 +80,18 @@ class AlphaCoder:
         self.database_input()
         return coded_img, im_name, self.password
     
-    def img_decode(self, img):
-        message = self.steg.im_decode(img)
+    def img_decode(self, data ,iter_data):
+        message = self.steg.im_decode(data ,iter_data)
         return message
     
-    def decode_message(self, img, password):
-        decoded = self.img_decode(img)
+    def decode_message_final(self, data ,iter_data , password):
+        decoded = self.img_decode(data ,iter_data)
         print(f"first {decoded}")
         login = decoded.split("___")[0]
         print(f"second {decoded}")
         encoded_message = decoded.split("___")[1]
         decode_key = self.database_out(login=login, passowrd=password)
+        print(decode_key)
         message = self.decode_message(decode_key, encoded_message)
         return message
         

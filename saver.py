@@ -13,7 +13,7 @@ class User_info(Base):
     __tablename__ = "user_information"
     
     Id: Mapped[int] = mapped_column(primary_key=True)
-    Login: Mapped[str]
+    Login: Mapped[str] = mapped_column(primary_key=True)
     Password: Mapped[str]
     Decode_key: Mapped[str]
     
@@ -30,7 +30,7 @@ class Hasher:
         return hashed
     
     def check_psw(self, password, hashed_psw):
-        passw = password.encode('utf-8')
+        passw = password.encode('UTF-8', errors="strict")
         return bcrypt.checkpw(password=passw, hashed_password=hashed_psw) 
 
     
@@ -63,17 +63,17 @@ class DatabaseKelner():
             return True
         
     def retrive_key(self, login, password):
-        try:
+        # try:
             stmt = select(User_info).where(User_info.Login.in_([login]))
             for elem in self.session.scalars(stmt):
                 hashed_password = elem.Password
                 decode_key = eval(elem.Decode_key)
             
-            if hasher.check_psw(password, hashed_password):
+            if self.hasher.check_psw(password, hashed_password):
                 return decode_key
 
-        except:
-            return False
+        # except:
+        #     return False
 
         
         
