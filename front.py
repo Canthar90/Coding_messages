@@ -1,5 +1,5 @@
 import streamlit as st
-from intial_ciphering import AlphaCoder
+from intial_ciphering import AlphaCoder, AlphaDecoder
 from io import BytesIO
 from PIL import Image
 
@@ -58,7 +58,7 @@ if raw_image and cipher_it and secret_message and (".jpg" in raw_image.name or "
 if decrypt_it and encrypted_image and (".jpg" in encrypted_image.name  or ".png" in encrypted_image.name):
     with open("encrypted.png", "wb") as file:
         imagge = file.write(encrypted_image.getbuffer())
-    coder = AlphaCoder("init")
+    coder = AlphaDecoder()
     with Image.open("encrypted.png") as img:  # type: ignore
         data = img.getdata()
         iter_data = iter(data)

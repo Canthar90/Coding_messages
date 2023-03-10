@@ -52,10 +52,6 @@ class AlphaCoder:
                                password=self.hashed_password,
                                key=self.decoding_key)
         
-    def database_out(self, login, passowrd):
-        return self.kelner.retrive_key(login=login, password=passowrd)
-        
-        
     def code_message(self):
         to_encode = list(self.text)
         new_message = ''
@@ -63,19 +59,30 @@ class AlphaCoder:
             new_message += self.coding_key[letter]
         return new_message
         
-    def decode_message(self, decode_key, message):
-        to_decode = list(message)
-        new_message = ''
-        for letter in to_decode:
-            new_message += decode_key[letter]
-        return new_message
-    
     def code_to_img(self, img, out_name):
         coded_img, im_name = self.steg.im_encode(text=self.encoded, path=img,
                                         out_name=out_name)
         self.database_input()
         return coded_img, im_name, self.password
+         
+
+class AlphaDecoder:
+    def __init__(self):
+    # Creating class instances
+        self.kelner =  DatabaseKelner()
+        self.hasher = Hasher()
+        self.steg = SeganographCoder()
+        
+    def database_out(self, login, passowrd):
+        return self.kelner.retrive_key(login=login, password=passowrd)
     
+    def decoder(self, decode_key, message):
+        to_decode = list(message)
+        new_message = ''
+        for letter in to_decode:
+            new_message += decode_key[letter]
+        return new_message
+        
     def img_decode(self, data ,iter_data):
         message = self.steg.im_decode(data ,iter_data)
         return message
@@ -86,13 +93,11 @@ class AlphaCoder:
         encoded_message = decoded.split("___")[1]
         decode_key = self.database_out(login=login, passowrd=password)
         if decode_key:
-            message = self.decode_message(decode_key, encoded_message)
+            message = self.decoder(decode_key, encoded_message)
             return message
         else:
             return False
-        
-        
-        
+
         
     
     
