@@ -63,7 +63,7 @@ class DatabaseKelner():
             return True
         
     def retrive_key(self, login, password):
-        # try:
+        try:
             stmt = select(User_info).where(User_info.Login.in_([login]))
             for elem in self.session.scalars(stmt):
                 hashed_password = elem.Password
@@ -72,8 +72,8 @@ class DatabaseKelner():
             if self.hasher.check_psw(password, hashed_password):
                 return decode_key
 
-        # except:
-        #     return False
+        except:
+            return False
 
         
         

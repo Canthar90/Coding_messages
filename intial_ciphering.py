@@ -40,9 +40,7 @@ class AlphaCoder:
             free_login = self.kelner.check_if_login_is_free(login)
         message_bufor =  login
         self.login = login
-        print(login)
         self.encoded = message_bufor + "___"+ self.encoded
-        print(self.encoded)
          
     def password_creator(self):
         characters = string.ascii_letters + string.digits + string.punctuation
@@ -55,7 +53,6 @@ class AlphaCoder:
                                key=self.decoding_key)
         
     def database_out(self, login, passowrd):
-        print(f"login {login}, password {passowrd}")
         return self.kelner.retrive_key(login=login, password=passowrd)
         
         
@@ -69,7 +66,6 @@ class AlphaCoder:
     def decode_message(self, decode_key, message):
         to_decode = list(message)
         new_message = ''
-        print(decode_key)
         for letter in to_decode:
             new_message += decode_key[letter]
         return new_message
@@ -86,14 +82,14 @@ class AlphaCoder:
     
     def decode_message_final(self, data ,iter_data , password):
         decoded = self.img_decode(data ,iter_data)
-        print(f"first {decoded}")
         login = decoded.split("___")[0]
-        print(f"second {decoded}")
         encoded_message = decoded.split("___")[1]
         decode_key = self.database_out(login=login, passowrd=password)
-        print(decode_key)
-        message = self.decode_message(decode_key, encoded_message)
-        return message
+        if decode_key:
+            message = self.decode_message(decode_key, encoded_message)
+            return message
+        else:
+            return False
         
         
         

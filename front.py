@@ -64,7 +64,10 @@ if decrypt_it and encrypted_image and (".jpg" in encrypted_image.name  or ".png"
         iter_data = iter(data)
     
     decrypted_msg =  coder.decode_message_final(data=data, iter_data=iter_data, password=secret_password)
-    st.subheader("Your secret message will be displayed below")
-    st.text(decrypted_msg)
+    if decrypted_msg:
+        st.subheader("Your secret message will be displayed below")
+        st.text(decrypted_msg)
+    else:
+        st.error("Your decode key or image was invalid")
     
 

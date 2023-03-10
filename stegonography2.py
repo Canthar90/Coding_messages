@@ -85,12 +85,6 @@ class StegCodec:
             The decoded text.
         """
 
-        # with Image.open(image) as img:  # type: ignore
-            # data = img.getdata()
-            # iter_data = iter(data)
-        # data = image.getdata()
-        # iter_data = iter(data)
-
         if len(data) < 3:
             raise ValueError("Image is too small!")
 
@@ -132,7 +126,6 @@ class SeganographCoder():
 
     def im_decode(self, data ,iter_data):
         res = (self.codec.decode(data ,iter_data))
-        print(res)
         return res
 
 
