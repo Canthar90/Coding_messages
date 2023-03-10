@@ -19,6 +19,7 @@ st.info("""
         Ciphered message will be additionally encrypted, key to you encription lies 
         in pictiure itself and code that you wil recive in popup plis copy it. 
         Send the pictiure and password to you fellow conspirator.
+        Special characters like ?!<> etc will be lost in message.
         """)
 
 with st.expander("Encrypt your message"):

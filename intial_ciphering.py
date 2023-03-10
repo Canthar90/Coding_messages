@@ -102,11 +102,6 @@ class AlphaCoder:
     
     
     
-if __name__ == "__main__":
-    coder = AlphaCoder("Kopytko".lower())
-    print(coder.coding_key)
-    print(coder.decoding_key)
-    print(coder.code_message())
-    print(coder.decode_message())
+
     
         
